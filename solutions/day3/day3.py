@@ -11,20 +11,27 @@ def part1():
     rows, cols = matrix.shape
     
     # Check the first row
-    for i in range(1, cols-1):
+    print("FIRST")
+    col = 0
+    while col < cols:
+        print(col)
         isPartNumber = True
-        if not matrix[0][i].isnumeric():
+        if not matrix[0][col].isnumeric():
+            col+=1
             continue
-        elif matrix[0][i].isnumeric():
+        elif matrix[0][col].isnumeric():
             # char is a number, check left, right, down, and diagonals
-            checked_places = [matrix[0][i-1], matrix[0][i+1], matrix[1][i], matrix[1][i+1], matrix[1][i-1]]
+            checked_places = [matrix[1][col]]
+            if col!=0:
+                checked_places.append(matrix[0][col-1], matrix[1][col-1])
+            if col!=cols-1:
+                checked_places.append(matrix[0][col+1], matrix[1][col+1])
             if all(place in ['.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] for place in checked_places):
                 isPartNumber = False
         if isPartNumber:
-            print (matrix[0][i] + " is a number")
             # Get full number substring, i.e. check to the left and right and get all digits
             left_start = -1
-            for j in range(i-1, -1, -1):
+            for j in range(col-1, -1, -1):
                 if matrix[0][j].isnumeric() and j == 0:
                     left_start = 0
                     break
@@ -34,7 +41,7 @@ def part1():
                     left_start = j+1
                     break
             right_end = -1
-            for j in range(i+1, cols):
+            for j in range(col+1, cols):
                 if matrix[0][j].isnumeric() and j == cols-1:
                     right_end = cols-1
                 if matrix[0][j].isnumeric():
@@ -43,27 +50,30 @@ def part1():
                     right_end = j
                     break
             number = int(''.join(matrix[0, left_start:right_end].tolist()))
+            print(number)
             sum += number
             
             # Continue checking after the place of the last digit of the number
-            i = right_end
+            col = right_end
+        col += 1
         
-    
+    print("LAST")
     # Check the last row
-    for i in range(1, cols-1):
+    col = 0
+    while col < cols:
         isPartNumber = True
-        if not matrix[rows-1][i].isnumeric():
+        if not matrix[rows-1][col].isnumeric():
+            col+=1
             continue
-        elif matrix[rows-1][i].isnumeric():
+        elif matrix[rows-1][col].isnumeric():
             # char is a number, check left, right, up, and diagonals
-            checked_places = [matrix[rows-1][i-1], matrix[rows-1][i+1], matrix[rows-2][i], matrix[rows-2][i+1], matrix[rows-2][i-1]]
+            checked_places = [matrix[rows-1][col-1], matrix[rows-1][col+1], matrix[rows-2][col], matrix[rows-2][col+1], matrix[rows-2][col-1]]
             if all(place in ['.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] for place in checked_places):
                 isPartNumber = False
         if isPartNumber:
-            print (matrix[cols-1][i] + " is a number")
             # Get full number substring, i.e. check to the left and right and get all digits
             left_start = -1
-            for j in range(i-1, -1, -1):
+            for j in range(col-1, -1, -1):
                 if matrix[rows-1][j].isnumeric() and j == 0:
                     left_start = 0
                     break
@@ -73,7 +83,7 @@ def part1():
                     left_start = j+1
                     break
             right_end = -1
-            for j in range(i+1, cols):
+            for j in range(col+1, cols):
                 if matrix[rows-1][j].isnumeric() and j == cols-1:
                     right_end = cols-1
                 if matrix[rows-1][j].isnumeric():
@@ -82,27 +92,31 @@ def part1():
                     right_end = j
                     break
             number = int(''.join(matrix[rows-1, left_start:right_end].tolist()))
+            print(number)
             sum += number
             
             # Continue checking after the place of the last digit of the number
-            i = right_end
+            col = right_end
+        col += 1
             
     # Check the rest of the rows
+    print("REST")
     for row in range(1, rows-1):
-        for i in range(cols):
+        col = 0
+        while col < cols:
             isPartNumber = True
-            if not matrix[row][i].isnumeric():
+            if not matrix[row][col].isnumeric():
+                col+=1
                 continue
-            elif matrix[row][i].isnumeric():
+            elif matrix[row][col].isnumeric():
                 # char is a number, check left, right, up, down, and diagonals
-                checked_places = [matrix[row][i-1], matrix[row][i+1], matrix[row-1][i], matrix[row+1][i], matrix[row-1][i+1], matrix[row-1][i-1], matrix[row+1][i+1], matrix[row+1][i-1]]
+                checked_places = [matrix[row][col-1], matrix[row][col+1], matrix[row-1][col], matrix[row+1][col], matrix[row-1][col+1], matrix[row-1][col-1], matrix[row+1][col+1], matrix[row+1][col-1]]
                 if all(place in ['.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] for place in checked_places):
                     isPartNumber = False
             if isPartNumber:
-                print (matrix[0][i] + " is a number")
                 # Get full number substring, i.e. check to the left and right and get all digits
                 left_start = -1
-                for j in range(i-1, -1, -1):
+                for j in range(col-1, -1, -1):
                     if matrix[row][j].isnumeric() and j == 0:
                         left_start = 0
                         break
@@ -112,7 +126,7 @@ def part1():
                         left_start = j+1
                         break
                 right_end = -1
-                for j in range(i+1, cols):
+                for j in range(col+1, cols):
                     if matrix[row][j].isnumeric() and j == cols-1:
                         right_end = cols-1
                     if matrix[row][j].isnumeric():
@@ -121,10 +135,12 @@ def part1():
                         right_end = j
                         break
                 number = int(''.join(matrix[row, left_start:right_end].tolist()))
+                print(number)
                 sum += number
                 
                 # Continue checking after the place of the last digit of the number
-                i = right_end
+                col = right_end
+            col += 1
     print(sum)  
         
                 
