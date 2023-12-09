@@ -24,7 +24,6 @@ def day1():
 def day2():
     copies = {}
     for i in range(len(lines)):
-        print("Card " + str(i))
         card = lines[i].split(':')
         num_pair= card[1].split('|')
         winning_numbers = num_pair[0].split()
@@ -35,22 +34,19 @@ def day2():
         for number in numbers:
             if number in winning_numbers:
                 num_matches += 1
-        print("Num matches: " + str(num_matches))
 
         # Add initial copy to copies
         if copies.get(i) is None:
             copies[i] = 1
         else: 
             copies[i] += 1
-        print("Adding initial copy to", i)
         
-        for num_times_to_add_copies in range(copies[i]):
+        for _ in range(copies[i]):
             # Add copies for each matching number
             for j in range(1, num_matches+1):
                 if copies.get(i+j) is None:
                     copies[i+j] = 1
                 else:
-                    copies[i+j] += 1
-        print("Copies: " + str(copies))            
+                    copies[i+j] += 1       
     print(sum(copies.values()))
 day2()
