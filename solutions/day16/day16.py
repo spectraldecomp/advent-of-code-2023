@@ -18,23 +18,11 @@ def laser(row, col, direction, visited, energized):
     visited[(row, col)].append(direction)
     energized.add((row, col))
     if arr[row][col] == '/':
-        if 'up' in direction:
-            direction = ['right']
-        elif 'right' in direction:
-            direction = ['up']
-        elif 'down' in direction:
-            direction = ['left']
-        elif 'left' in direction:
-            direction = ['down']
+        map = {'up': 'right', 'right': 'up', 'down': 'left', 'left': 'down'}
+        direction = [map[d] for d in direction]
     elif arr[row][col] == '\\':
-        if 'up' in direction:
-            direction = ['left']
-        elif 'right' in direction:
-            direction = ['down']
-        elif 'down' in direction:
-            direction = ['right']
-        elif 'left' in direction:
-            direction = ['up']
+        map = {'up': 'left', 'left': 'up', 'down': 'right', 'right': 'down'}
+        direction = [map[d] for d in direction]
     elif arr[row][col] == '|':
         if 'left' in direction or 'right' in direction:
             direction = ['up', 'down']
@@ -50,8 +38,6 @@ def laser(row, col, direction, visited, energized):
             laser(row, col-1, ['left'], visited, energized)
         elif d == 'right' and col+1 < arr.shape[1]:
             laser(row, col+1, ['right'], visited, energized)
-        else:
-            continue
     return
 
 max_num = 0
